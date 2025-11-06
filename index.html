@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tagebuch App</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <h1>Mein Tagebuch Formular</h1>
+  <form id="entry-form">
+    <label>Aufstehzeit: <input type="time" id="aufstehzeit" required /></label><br />
+    <label>Schlafenszeit: <input type="time" id="schlafenszeit" required /></label><br />
+    <label>Stresslevel (1-10): <input type="number" id="stresslevel" min="1" max="10" required /></label><br />
+    <label>Bewegung (Minuten): <input type="number" id="bewegung" min="0" required /></label><br />
+    <button type="submit">Speichern</button>
+  </form>
+
+  <button id="download-csv">CSV herunterladen</button>
+
+  <div id="message"></div>
+</body>
+</html>
