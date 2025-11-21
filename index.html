@@ -25,16 +25,24 @@
             <label>Zeitpunkt der Erhebung: </label><input type="datetime-local" id="datum" required />
           </div>
           <div class="form-row">
-            <label for="aufstehzeit">Aufstehzeit: </label>
+            <label for="aufstehzeit">Aufstehzeit⏰</label>
             <input type="time" id="aufstehzeit" required />
-            <label for="stresslevel">Stresslevel: </label>
-            <input type="number" id="stresslevel" min="1" max="10" required placeholder="1 - 10"/>
           </div>
           <div class="form-row">
-            <label for="schlafenszeit">Schlafenszeit: </label>
+            <label for="schlafenszeit">Schlafenszeit🙂</label>
             <input type="time" id="schlafenszeit" required />
-            <label for="schlafqualitat">Schlafqualität: </label>
-            <input type="number" id="schlafqualitat" min="1" max="10" required placeholder="1 - 10"/>
+          </div>
+          <div class="form-row">
+            <label for="stresslevel">Stresslevel💤</label>
+            <div class="rating-buttons-group" id="rating-buttons-stresslevel">
+            </div>
+            <input type="hidden" id="stresslevel" name="stresslevel" min="1" max="10" required/>
+          </div>
+          <div class="form-row">
+            <label for="schlafqualitat">Schlafqualität🛏️ </label>
+            <div class="rating-buttons-group" id="rating-buttons-schlafqualitat">
+            </div>
+            <input type="hidden" id="schlafqualitat" name="schlafqualitat" min="1" max="10" required/>
           </div>
         </div>
         <button type="submit" class="action-button" id="save-button" style="display: inline-block;">Speichern</button>

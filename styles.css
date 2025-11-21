@@ -17,9 +17,6 @@ body {
   align-items: baseline;
   justify-content: left baseline;
 }
-.form-row label {
-  min-width: 25%;
-}
 
 button {
   padding: 8px 12px;
@@ -45,6 +42,27 @@ input[type="text"], input[type="time"], input[type="number"], input[type="dateti
 }
 #entry-form label {
   margin: 0px;
+}
+
+.rating-buttons-group {
+  display: flex;
+  gap: 0.25rem;
+}
+.rating-btn {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #888;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.rating-btn.selected {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+.rating-btn:hover:not(.selected) {
+  background: #e0e0e0;
 }
 
 #entries-header {
@@ -190,6 +208,6 @@ button.delete-button:hover {
     padding: 4px;
   }
   #entries-table-container {
-  max-height: 350px
+  max-height: 50%
   }
 }

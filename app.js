@@ -1,8 +1,4 @@
-// Hilfsfunktion: CSV aus Array erzeugen
-function arrayToCSV(rows) {
-  return rows.map(r => r.map(String)
-    .map(field => `"${field.replace(/"/g, '""')}"`).join(",")).join("\n");
-}
+
 
 // Daten aus localStorage lesen oder neu initialisieren
 function loadEntries() {
@@ -10,6 +6,7 @@ function loadEntries() {
   return data ? JSON.parse(data) : [];
 }
 
+// Formular zurücksetzen
 function resetForm() {
   document.getElementById('entry-form').reset();
   document.getElementById('entry-index').value = '';
@@ -135,7 +132,30 @@ function updateView() {
   displayEntries();
 }
 
+function createRatingButtons(minValue, maxValue, containerId, hiddenInputId) {
+  const container = document.getElementById(containerId);
+  const hiddenInput = document.getElementById(hiddenInputId);
+  if (!container || !hiddenInput) return;
+  for (let i = minValue; i <= maxValue; i++) {
+    const button = document.createElement('button');
+    button.type = 'button';   
+    button.textContent = i;
+    button.value = i;
+    button.className = 'rating-btn';
+    button.addEventListener('click', () => {
+      Array.from(container.children).forEach(b => b.classList.remove('selected'));
+      // Add "selected" class to clicked button
+      button.classList.add('selected');
+      // Update hidden input value
+      hiddenInput.value = button.value;
+    }
+    );
+    container.appendChild(button);
+  }
+}
 function initialize() {
+  createRatingButtons(1, 10, 'rating-buttons-stresslevel', 'stresslevel');
+  createRatingButtons(1, 10, 'rating-buttons-schlafqualitat', 'schlafqualitat');
   resetForm();
   updateView();
 }
@@ -181,6 +201,12 @@ document.getElementById('download-csv').addEventListener('click', () => {
   a.click();
   URL.revokeObjectURL(url);
 });
+
+// Hilfsfunktion: CSV aus Array erzeugen
+function arrayToCSV(rows) {
+  return rows.map(r => r.map(String)
+    .map(field => `"${field.replace(/"/g, '""')}"`).join(",")).join("\n");
+}
 
 // Service Worker registrieren
 if ('serviceWorker' in navigator) {
