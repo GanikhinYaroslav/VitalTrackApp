@@ -35,16 +35,16 @@
           <div class="form-row">
             <label for="stresslevel">Stresslevel</label>
             <span>🙂</span>
-            <div class="rating-buttons-group" id="rating-buttons-stresslevel">
+            <div class="rating-buttons-group" id="rating-buttons-stresslevel" role="group" aria-label="Stresslevel rating">
             </div>
             <span>😤</span>
-            <input type="hidden" id="stresslevel" name="stresslevel" min="1" max="10" required/>
+            <input type="hidden" id="stresslevel" name="stresslevel" required/>
           </div>
           <div class="form-row">
             <label for="schlafqualitat">Schlafqualität 🛏️ </label>
-            <div class="rating-buttons-group" id="rating-buttons-schlafqualitat">
+            <div class="rating-buttons-group" id="rating-buttons-schlafqualitat" role="group" aria-label="Schlafqualität rating">
             </div>
-            <input type="hidden" id="schlafqualitat" name="schlafqualitat" min="1" max="10" required/>
+            <input type="hidden" id="schlafqualitat" name="schlafqualitat" required/>
           </div>
         </div>
         <button type="submit" class="action-button" id="save-button" style="display: inline-block;">Speichern</button>

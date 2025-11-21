@@ -9,14 +9,23 @@ function loadEntries() {
 // Formular zurücksetzen
 function resetForm() {
   document.getElementById('entry-form').reset();
+  document.getElementById('stresslevel').value = '';
+  document.getElementById('schlafqualitat').value = '';
   document.getElementById('entry-index').value = '';
   document.getElementById('save-button').textContent = 'Speichern';
   document.getElementById('cancel-button').style.display = 'none';
   document.getElementById('message').textContent = '';
 }
 
+function validateEntry(entry) {
+  return isValidInputScore(entry.stresslevel, 1, 10) && isValidInputScore(entry.schlafqualitat, 1, 10);
+}
+
 // Eintrag speichern
 function saveEntry(entry) {
+  if (!validateEntry(entry)) {
+    return false;
+  }
   const entries = loadEntries();
   // Neueintrag hinzufügen wenn es kein Index zum Bearbeiten gibt
   // sonst wird der bestendende Eintrag aktualisiert
@@ -27,11 +36,10 @@ function saveEntry(entry) {
     entries[index] = entry;
   }else {
     console.error('Ungültiger Eintragsindex:', index);
-    return;
+    return false;
   }
   localStorage.setItem('tagebuchEntries', JSON.stringify(entries));
-  resetForm();
-  updateView();
+  return true;
 }
 
 //Aktuelles Datum im Format YYYY-MM-DD:MM einbinden
@@ -50,6 +58,13 @@ function isFirstTimeBeforeOrEqualSecond(first, second) {
   return h1 < h2 || (h1 === h2 && m1 <= m2);
 }
 
+// Validierung der Score-Werte
+function isValidInputScore(value, minValue, maxValue) {
+  const num = Number(value);
+  return Number.isInteger(num) && num >= minValue && num <= maxValue;
+}
+
+// Eintragdaten anhand des Index laden
 function loadEntryData(index) {
   const entries = loadEntries();
   return entries[index];
@@ -135,7 +150,17 @@ function updateView() {
 function createRatingButtons(minValue, maxValue, containerId, hiddenInputId) {
   const container = document.getElementById(containerId);
   const hiddenInput = document.getElementById(hiddenInputId);
-  if (!container || !hiddenInput) return;
+  const entryForm = document.getElementById('entry-form');
+  if (!container || !hiddenInput || !entryForm) return;
+
+  // Function to update button highlight based on hidden input value
+  function updateButtonSelection() {
+    const currentValue = hiddenInput.value;
+    Array.from(container.children).forEach(btn => {
+      btn.classList.toggle('selected', btn.value === currentValue);
+    });
+  }  
+
   for (let i = minValue; i <= maxValue; i++) {
     const button = document.createElement('button');
     button.type = 'button';   
@@ -143,14 +168,24 @@ function createRatingButtons(minValue, maxValue, containerId, hiddenInputId) {
     button.value = i;
     button.className = 'rating-btn';
     button.addEventListener('click', () => {
-      Array.from(container.children).forEach(b => b.classList.remove('selected'));
-      // Add "selected" class to clicked button
-      button.classList.add('selected');
-      // Update hidden input value
       hiddenInput.value = button.value;
-    }
-    );
-    container.appendChild(button);
+      updateButtonSelection();
+    });
+
+  container.appendChild(button);
+  // Update button selection on form reset
+  entryForm.addEventListener('reset', () => {
+    updateButtonSelection();
+  });
+
+  hiddenInput.value = '';
+  hiddenInput.required = true;
+  // Call initially to synchronize buttons with hidden input's initial value
+  updateButtonSelection();
+
+  // Optional: Observe changes to hidden input value done programmatically using MutationObserver
+  const observer = new MutationObserver(updateButtonSelection);
+  observer.observe(hiddenInput, { attributes: true, attributeFilter: ['value'] });
   }
 }
 function initialize() {
@@ -167,6 +202,10 @@ document.getElementById('entry-form').addEventListener('submit', e => {
   e.preventDefault();
   const wakeUp = e.target.aufstehzeit.value;
   const sleep = e.target.schlafenszeit.value;
+  if (!stresslevel.value || !schlafqualitat.value) {
+    e.preventDefault();
+    alert('Bitte wählen Sie Stress und Schlafqualität aus.'); 
+  }
   const entry = {
       datum: e.target.datum.value,
       aufstehzeit: e.target.aufstehzeit.value,
@@ -174,10 +213,14 @@ document.getElementById('entry-form').addEventListener('submit', e => {
       stresslevel: e.target.stresslevel.value,
       schlafqualitat: e.target.schlafqualitat.value
     };
-  saveEntry(entry);
-  alert('Eintrag gespeichert.');
-  e.target.reset();
-  updateView();
+  let success = saveEntry(entry);
+  if (success) {
+    alert('Eintrag gespeichert.');
+    resetForm();
+    updateView();
+  } else {
+    console.error('Fehler beim Speichern des Eintrags. Bitte überprüfen Sie die Eingabedaten.');
+  }
 });
 
 // CSV herunterladen

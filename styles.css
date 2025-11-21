@@ -45,22 +45,29 @@ input[type="text"], input[type="time"], input[type="number"], input[type="dateti
 }
 
 .rating-buttons-group {
-  display: flex;
-  gap: 0.25rem;
+    display: inline-flex;
+    border: 1px solid #888;
+    border-radius: 10px; /* Round panel corners */
+    overflow: hidden; /* Clip children border radius */
 }
 .rating-btn {
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #888;
+  border: none;
   background: #fff;
+  padding: 0.4rem 0.4rem;
+  font-size: 0.6rem;
+  flex: 1 1 auto; /* Equal width buttons */
+  transition: background-color 0.3s, color 0.1s;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 1rem;
+}
+
+.rating-btn:not(:last-child) {
+  border-right: 1px solid #888; /* Separator line */
 }
 .rating-btn.selected {
   background: #007bff;
   color: white;
-  border-color: #007bff;
 }
+
 .rating-btn:hover:not(.selected) {
   background: #e0e0e0;
 }
