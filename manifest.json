@@ -2,7 +2,8 @@
   "name": "VitalTrackApp",
   "short_name": "VitalTrack",
   "start_url": "/",
-  "display": "standalone",
+  "scope": "/",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#4a90e2",
   "icons": [

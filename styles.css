@@ -1,15 +1,195 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
-  max-width: 400px;
+  padding: 10px;
+  max-width: 100%;
 }
 
-label, button {
-  display: block;
-  margin: 10px 0;
+.form-container {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: left baseline;
+}
+.form-row label {
+  min-width: 25%;
 }
 
 button {
   padding: 8px 12px;
 }
+p {
+  margin: 5px 0;
+}
 
+.main-container {
+  display: flex;
+  flex-direction: row;
+  row-gap: 10px;
+  column-gap: 20px;
+}
+.main-container > div {
+  width: 100%;
+}
+
+input[type="text"], input[type="time"], input[type="number"], input[type="datetime-local"] {
+  padding: 5px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+#entry-form label {
+  margin: 0px;
+}
+
+#entries-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+#entries-table-container {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: block;
+}
+#entries-table-container tbody {
+  min-width: 600px; /* or a suitable min width to allow horizontal scroll */
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead {
+  background-color: #4CAF50;
+  color: white;
+}
+thead th {
+  position: sticky;
+  top: 0; 
+  background-color: #4CAF50;
+  z-index: 1;
+  padding: 6px;
+  text-align: center;
+}
+
+.entry-row tbody tr{
+  display: table-row;
+  width: 100%;
+  table-layout: fixed;
+}
+.entry-row td, .entry-row th {
+  width: fit-content;    /* fits content width */
+  min-width: fit-content;
+  padding: 1px;
+  border: 1px solid #ddd;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.entry-row:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.entry-row:hover {
+  background-color: #ddd;
+}
+
+button.action-button {
+  background-color: #f0f0f0;
+  color: #111;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+button.action-button:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+button.action-button:active {
+  background-color: #d4d4d4;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+button.edit-button {
+  border-radius: 4px;
+  margin: 2px;
+  padding: 4px 6px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button.edit-button:hover {
+  background-color: #45a049;
+}
+
+button.delete-button {
+  border-radius: 4px;
+  margin: 2px;
+  padding: 4px 6px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button.delete-button:hover {
+  background-color: #e60000;
+}
+
+.button-group {
+  margin-top: 0px;
+  margin: auto;
+  display: flex;
+  gap: 3px;
+  justify-content: space-evenly;
+}
+.entry-row.button-group {
+  justify-content: center;
+}
+
+
+@media (max-width: 600px) {
+  .main-container {
+    flex-direction: column;
+  }
+  body>* {
+    width: 100%;
+  }
+  h1 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  body {
+    font-size: 14px;
+    margin: 10px;
+  }
+  input, button {
+    max-width: 100%;
+  }
+  table, th, td {
+    text-align: center;
+    font-size: 14px;
+    padding: 4px;
+  }
+  #entries-table-container {
+  max-height: 250px
+  }
+}

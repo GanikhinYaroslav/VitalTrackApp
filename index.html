@@ -2,25 +2,75 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4a90e2" />
+  <meta name="description" content="Eine App zur Erfassung und Verfolgung täglicher Vitaldaten." />
   <title>Tagebuch App</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="icons/icon-128x128.png" />
+  <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128x128.png" />
   <script defer src="app.js"></script>
 </head>
 <body>
   <h1>Mein Tagebuch Formular</h1>
-  <form id="entry-form">
-    <label>Zeitpunkt der Erhebung: <input type="datetime-local" id="datum" required /></label><br />
-    <label>Aufstehzeit: <input type="time" id="aufstehzeit" required /></label><br />
-    <label>Schlafenszeit: <input type="time" id="schlafenszeit" required /></label><br />
-    <label>Stresslevel (1-10): <input type="number" id="stresslevel" min="1" max="10" required /></label><br />
-    <label>Schlafqualität (1-10): <input type="number" id="schlafqualitat" min="1" max="10" required /></label><br />
-    <button type="submit">Speichern</button>
-  </form>
 
-  <button id="download-csv">CSV herunterladen</button>
+  <div class="main-container">
+    <div>
+      <p>Bitte füllen Sie das folgende Formular aus, um Ihre täglichen Vitaldaten zu erfassen.</p>
+      <form id="entry-form">
+        <input type="hidden" id="entry-index" value=""/>
+        <div class="form-container">
+          <div class="form-row">
+            <label>Zeitpunkt der Erhebung: </label><input type="datetime-local" id="datum" required />
+          </div>
+          <div class="form-row">
+            <label for="aufstehzeit">Aufstehzeit: </label>
+            <input type="time" id="aufstehzeit" required />
+            <label for="stresslevel">Stresslevel: </label>
+            <input type="number" id="stresslevel" min="1" max="10" required placeholder="1 - 10"/>
+          </div>
+          <div class="form-row">
+            <label for="schlafenszeit">Schlafenszeit: </label>
+            <input type="time" id="schlafenszeit" required />
+            <label for="schlafqualitat">Schlafqualität: </label>
+            <input type="number" id="schlafqualitat" min="1" max="10" required placeholder="1 - 10"/>
+          </div>
+        </div>
+        <button type="submit" class="action-button" id="save-button" style="display: inline-block;">Speichern</button>
+        <button type="button" class="action-button" id="cancel-button" style="display: none;" onclick="cancelEntryEdit()">
+          Abbrechen
+        </button>
 
-  <div id="message"></div>
+      </form>
+      <div id="message"></div>
+    </div>
+
+    <div id="entries-container">
+      <div id="entries-header">
+        <p>Gespeicherte Einträge</p>
+        <button class="action-button" id="download-csv" style="flex-shrink: 0;">CSV herunterladen</button>
+      </div>
+      <div id="entries-table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Datum</th>
+            <th>⏰</th>
+            <th>💤</th>
+            <th>🙂</th>
+            <th>🛏️</th>
+            <th colspan="2"></th>
+          </tr>
+        </thead>
+        <tbody id="entries-table-body">
+          <!-- Einträge werden hier eingefügt -->
+        </tbody>
+      </table>
+      </div>
+  </div>
+  
+
 </body>
 </html>
