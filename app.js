@@ -17,11 +17,22 @@ function saveEntry(entry) {
   localStorage.setItem('tagebuchEntries', JSON.stringify(entries));
 }
 
+//Aktuelles Datum im Format YYYY-MM-DD:MM einbinden
+function updateDateField(){
+  const input = document.getElementById('datum');
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  const local = new Date(now.getTime() - (offset * 60 * 1000));
+  input.value = local.toISOString().slice(0,16);
+}
+
+window.addEventListener('load', updateDateField);
+
 // Formulareinreichung verarbeiten
 document.getElementById('entry-form').addEventListener('submit', e => {
   e.preventDefault();
   const entry = {
-    datum: new Date().toLocaleDateString(),
+    datum: e.target.datum.value,
     aufstehzeit: e.target.aufstehzeit.value,
     schlafenszeit: e.target.schlafenszeit.value,
     stresslevel: e.target.stresslevel.value,
@@ -30,6 +41,7 @@ document.getElementById('entry-form').addEventListener('submit', e => {
   saveEntry(entry);
   document.getElementById('message').textContent = 'Eintrag gespeichert!';
   e.target.reset();
+  updateDateField();
 });
 
 // CSV herunterladen
@@ -39,6 +51,9 @@ document.getElementById('download-csv').addEventListener('click', () => {
     alert('Keine Daten zum Exportieren.');
     return;
   }
+  // Einträge nach Datum sortieren
+  entries.sort((a, b) => new Date(a.datum) - new Date(b.datum));
+
   const header = ['Datum', 'Aufstehzeit', 'Schlafenszeit', 'Stresslevel', 'Schlafqualitaet'];
   const rows = [header].concat(entries.map(e => [e.datum, e.aufstehzeit, e.schlafenszeit, e.stresslevel, e.schlafqualitat]));
   const csvContent = arrayToCSV(rows);
@@ -46,7 +61,7 @@ document.getElementById('download-csv').addEventListener('click', () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'tagebuch.csv';
+  a.download = `tagebuch-${new Date().toISOString().slice(0,16)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 });
