@@ -185,7 +185,7 @@ document.getElementById('download-csv').addEventListener('click', () => {
 // Service Worker registrieren
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('/VitalTrackApp/service-worker.js')
       .then(reg => console.log('Service Worker registriert', reg))
       .catch(err => console.error('Service Worker Registrierung fehlgeschlagen', err));
   });
