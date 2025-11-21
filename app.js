@@ -26,22 +26,35 @@ function updateDateField(){
   input.value = local.toISOString().slice(0,16);
 }
 
+// Vergleichsfunktion für Zeiten im Format "HH:MM"
+function isFirstTimeBeforeOrEqualSecond(first, second) {
+  const [h1, m1] = first.split(':').map(Number);
+  const [h2, m2] = second.split(':').map(Number);
+  return h1 < h2 || (h1 === h2 && m1 <= m2);
+}
+
 window.addEventListener('load', updateDateField);
 
 // Formulareinreichung verarbeiten
 document.getElementById('entry-form').addEventListener('submit', e => {
   e.preventDefault();
-  const entry = {
-    datum: e.target.datum.value,
-    aufstehzeit: e.target.aufstehzeit.value,
-    schlafenszeit: e.target.schlafenszeit.value,
-    stresslevel: e.target.stresslevel.value,
-    schlafqualitat: e.target.schlafqualitat.value
-  };
-  saveEntry(entry);
-  document.getElementById('message').textContent = 'Eintrag gespeichert!';
-  e.target.reset();
-  updateDateField();
+  const wakeUp = e.target.aufstehzeit.value;
+  const sleep = e.target.schlafenszeit.value;
+  if (isFirstTimeBeforeOrEqualSecond(wakeUp, sleep)) {
+    const entry = {
+      datum: e.target.datum.value,
+      aufstehzeit: e.target.aufstehzeit.value,
+      schlafenszeit: e.target.schlafenszeit.value,
+      stresslevel: e.target.stresslevel.value,
+      schlafqualitat: e.target.schlafqualitat.value
+    };
+    saveEntry(entry);
+    document.getElementById('message').textContent = 'Eintrag gespeichert!';
+    e.target.reset();
+    updateDateField();
+  } else {
+    alert('Die Aufstehzeit darf nicht größer als die Schlafenszeit sein.');
+  }
 });
 
 // CSV herunterladen
