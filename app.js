@@ -25,7 +25,7 @@ document.getElementById('entry-form').addEventListener('submit', e => {
     aufstehzeit: e.target.aufstehzeit.value,
     schlafenszeit: e.target.schlafenszeit.value,
     stresslevel: e.target.stresslevel.value,
-    bewegung: e.target.bewegung.value
+    schlafqualitat: e.target.schlafqualitat.value
   };
   saveEntry(entry);
   document.getElementById('message').textContent = 'Eintrag gespeichert!';
@@ -39,8 +39,8 @@ document.getElementById('download-csv').addEventListener('click', () => {
     alert('Keine Daten zum Exportieren.');
     return;
   }
-  const header = ['Datum', 'Aufstehzeit', 'Schlafenszeit', 'Stresslevel', 'Bewegung'];
-  const rows = [header].concat(entries.map(e => [e.datum, e.aufstehzeit, e.schlafenszeit, e.stresslevel, e.bewegung]));
+  const header = ['Datum', 'Aufstehzeit', 'Schlafenszeit', 'Stresslevel', 'Schlafqualitaet'];
+  const rows = [header].concat(entries.map(e => [e.datum, e.aufstehzeit, e.schlafenszeit, e.stresslevel, e.schlafqualitat]));
   const csvContent = arrayToCSV(rows);
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
