@@ -230,9 +230,6 @@ document.getElementById('download-csv').addEventListener('click', () => {
     alert('Keine Daten zum Exportieren.');
     return;
   }
-  // Einträge nach Datum sortieren
-  entries.sort((a, b) => new Date(a.datum) - new Date(b.datum));
-
   const header = ['Datum', 'Aufstehzeit', 'Schlafenszeit', 'Stresslevel', 'Schlafqualitaet'];
   const rows = [header].concat(entries.map(e => [e.datum, e.aufstehzeit, e.schlafenszeit, e.stresslevel, e.schlafqualitat]));
   const csvContent = arrayToCSV(rows);

@@ -17,12 +17,12 @@
 
   <div class="main-container">
     <div>
-      <p>Bitte füllen Sie das folgende Formular aus, um Ihre täglichen Vitaldaten zu erfassen.</p>
+      <p>Bitte füllen Sie das folgende Formular aus, um Ihre täglichen Werte zu erfassen.</p>
       <form id="entry-form">
         <input type="hidden" id="entry-index" value=""/>
         <div class="form-container">
           <div class="form-row">
-            <label>Zeitpunkt der Erhebung: </label><input type="datetime-local" id="datum" required />
+            <label>Datum</label><input type="datetime-local" id="datum" required />
           </div>
           <div class="form-row">
             <label for="aufstehzeit">Aufstehzeit ⏰</label>
@@ -33,11 +33,9 @@
             <input type="time" id="schlafenszeit" required />
           </div>
           <div class="form-row">
-            <label for="stresslevel">Stresslevel</label>
-            <span>🙂</span>
+            <label for="stresslevel">Stresslevel 🙂</label>
             <div class="rating-buttons-group" id="rating-buttons-stresslevel" role="group" aria-label="Stresslevel rating">
             </div>
-            <span>😤</span>
             <input type="hidden" id="stresslevel" name="stresslevel" required/>
           </div>
           <div class="form-row">
