@@ -8,8 +8,9 @@
   <title>Tagebuch App</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="icons/icon-128x128.png" />
-  <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128x128.png" />
+  <link rel="icon" type="image/png" sizes="144x144" href="icons/icon-144x144.png" />
+  <link rel="icon" href="icons/icon-512x512.ico" />
+  <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png" />
   <script defer src="app.js"></script>
 </head>
 <body>
@@ -46,9 +47,7 @@
           </div>
         </div>
         <button type="submit" class="action-button" id="save-button" style="display: inline-block;">Speichern</button>
-        <button type="button" class="action-button" id="cancel-button" style="display: none;" onclick="cancelEntryEdit()">
-          Abbrechen
-        </button>
+        <button type="button" class="action-button" id="cancel-button" style="display: none;">Abbrechen</button>
 
       </form>
       <div id="message"></div>
