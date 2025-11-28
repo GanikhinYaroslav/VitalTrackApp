@@ -67,7 +67,7 @@ const CACHE_KEY = 'tagebuchFormCache';
 //Eingabe bis zum nächsten Submit im Cache speichern
 // Datum der Erfassung wird nicht gecached
 function cacheFormInput(form, entryIndex) {
-  if (!form || !entryIndex) return;
+  if (!form) return;
   // Beim Bearbeiten der bestehenden Einträgen nicht cachen
   if (entryIndex !== '') {
     return;
@@ -260,6 +260,32 @@ function resetForm({
   cancelButton.style.display = 'none';
   messageElement.textContent = '';
 }
+
+// Formular mit Eintragsdaten füllen
+function populateFormWithEntry(entry, {  indexInput,  dateInput,  
+  wakeTimeInput,  sleepTimeInput,  stressInput,  qualityInput,
+  saveButton,  cancelButton
+}) {
+  indexInput.value = entry.index;
+  dateInput.value = entry.datum;
+  wakeTimeInput.value = entry.aufstehzeit;
+  sleepTimeInput.value = entry.schlafenszeit;
+  stressInput.value = entry.stresslevel;
+  qualityInput.value = entry.schlafqualitat;
+  saveButton.textContent = 'Ändern';
+  cancelButton.style.display = 'inline-block';
+}
+
+// Formulardaten extrahieren
+function extractFormData(form) {
+  return {
+    datum: form.datum.value,
+    aufstehzeit: form.aufstehzeit.value,
+    schlafenszeit: form.schlafenszeit.value,
+    stresslevel: form.stresslevel.value,
+    schlafqualitat: form.schlafqualitat.value
+  };
+}
 //#endregion--------------------
 
 //#region-----------app.js-----------
@@ -293,31 +319,6 @@ const formElements = {
   messageElement: DOM.messageElement
 };
 
-// Formulardaten extrahieren
-function extractFormData(form) {
-  return {
-    datum: form.datum.value,
-    aufstehzeit: form.aufstehzeit.value,
-    schlafenszeit: form.schlafenszeit.value,
-    stresslevel: form.stresslevel.value,
-    schlafqualitat: form.schlafqualitat.value
-  };
-}
-
-// Formular mit Eintragsdaten füllen
-function populateFormWithEntry(entry, {  indexInput,  dateInput,  
-  wakeTimeInput,  sleepTimeInput,  stressInput,  qualityInput,
-  saveButton,  cancelButton
-}) {
-  indexInput.value = entry.index;
-  dateInput.value = entry.datum;
-  wakeTimeInput.value = entry.aufstehzeit;
-  sleepTimeInput.value = entry.schlafenszeit;
-  stressInput.value = entry.stresslevel;
-  qualityInput.value = entry.schlafqualitat;
-  saveButton.textContent = 'Ändern';
-  cancelButton.style.display = 'inline-block';
-}
 
 // Löschbestätigung anzeigen
 function confirmAndDeleteEntry(index, entry) {
