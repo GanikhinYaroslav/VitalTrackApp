@@ -1,6 +1,6 @@
 const CACHE_NAME = 'tagebuch-cache-v1';
 const FILES_TO_CACHE = [
-  '/', '/index.html', '/styles.css', '/app.js', '/manifest.json',
+  '/', '/index.html', '/styles.css', '/modules/app.js', '/manifest.json',
   '/icons/icon-48x48.png',
   '/icons/icon-72x72.png',
   '/icons/icon-96x96.png',

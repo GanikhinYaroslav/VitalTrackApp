@@ -88,7 +88,7 @@ table {
   width: 100%;
 }
 #entries-table-container {
-  max-height: 500px;
+  max-height: 450px;
   overflow-y: auto;
   overflow-x: auto;
   display: block;
@@ -216,5 +216,11 @@ button.delete-button:hover {
   }
   #entries-table-container {
   max-height: 300px;
+  }
+}
+
+@media (max-height: 500px) {
+  #entries-table-container {
+  max-height: 230px;
   }
 }

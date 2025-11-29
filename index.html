@@ -6,18 +6,20 @@
   <meta name="theme-color" content="#4a90e2" />
   <meta name="description" content="Eine App zur Erfassung und Verfolgung täglicher Vitaldaten." />
   <title>Tagebuch App</title>
+
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" sizes="144x144" href="icons/icon-144x144.png" />
   <link rel="icon" href="icons/icon-512x512.ico" />
   <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png" />
-  <script defer src="app.js"></script>
+  
+  <script defer type="module" src="modules/app.js"></script>
 </head>
 <body>
   <h1>Mein Tagebuch Formular</h1>
 
   <div class="main-container">
-    <div>
+    <div id="diary-form-container">
       <p>Bitte füllen Sie das folgende Formular aus, um Ihre täglichen Werte zu erfassen.</p>
       <form id="entry-form">
         <input type="hidden" id="entry-index" value=""/>
@@ -48,9 +50,8 @@
         </div>
         <button type="submit" class="action-button" id="save-button" style="display: inline-block;">Speichern</button>
         <button type="button" class="action-button" id="cancel-button" style="display: none;">Abbrechen</button>
-
+        <div id="message"></div>
       </form>
-      <div id="message"></div>
     </div>
 
     <div id="entries-container">
@@ -59,7 +60,7 @@
         <button class="action-button" id="download-csv" style="flex-shrink: 0;">CSV herunterladen</button>
       </div>
       <div id="entries-table-container">
-      <table>
+      <table id="entries-table">
         <thead>
           <tr>
             <th></th>
