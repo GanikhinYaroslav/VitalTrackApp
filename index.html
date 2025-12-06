@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,77 +9,218 @@
   <title>Tagebuch App</title>
 
   <link rel="manifest" href="manifest.json" />
+  <!-- Bootstrap 4 CSS für Modals -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" sizes="144x144" href="icons/icon-144x144.png" />
   <link rel="icon" href="icons/icon-512x512.ico" />
   <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png" />
-  
+
   <script defer type="module" src="modules/app.js"></script>
 </head>
+
 <body>
-  <h1>Mein Tagebuch Formular</h1>
 
   <div class="main-container">
     <div id="diary-form-container">
-      <p>Bitte füllen Sie das folgende Formular aus, um Ihre täglichen Werte zu erfassen.</p>
       <form id="entry-form">
-        <input type="hidden" id="entry-index" value=""/>
+        <h5>Mein Tagebuch Formular</h5>
+
+
+        <input type="hidden" id="entry-index" value="" />
+
+
         <div class="form-container">
-          <div class="form-row">
-            <label>Datum</label><input type="datetime-local" id="datum" required />
+          <!-- DATUM -->
+          <div class="form-group">
+            <p class="explanation">Bitte füllen Sie das folgende Formular aus, um Ihre täglichen Werte zu erfassen.</p>
+            Datum
+            <input type="datetime-local" id="datum" required />
           </div>
-          <div class="form-row">
-            <label for="aufstehzeit">Aufstehzeit ⏰</label>
-            <input type="time" id="aufstehzeit" required />
-          </div>
-          <div class="form-row">
-            <label for="schlafenszeit">Schlafenszeit 💤</label>
-            <input type="time" id="schlafenszeit" required />
-          </div>
-          <div class="form-row">
-            <label for="stresslevel">Stresslevel 🙂</label>
-            <div class="rating-buttons-group" id="rating-buttons-stresslevel" role="group" aria-label="Stresslevel rating">
+
+          <!-- NACH DEM AUFWACHEN -->
+          <div class="form-group">
+            <h6>Nach dem Aufwachen</h6>
+            <div class="form-row align-items-baseline">
+              <div class="col-md-9">
+                <p class="explanation">Wann sind Sie heute aufgestanden?</p>
+              </div>
+              <div class="col-md-3">
+                <input type="time" id="aufstehzeit" required /></label>
+              </div>
             </div>
-            <input type="hidden" id="stresslevel" name="stresslevel" required/>
-          </div>
-          <div class="form-row">
-            <label for="schlafqualitat">Schlafqualität 🛏️ </label>
-            <div class="rating-buttons-group" id="rating-buttons-schlafqualitat" role="group" aria-label="Schlafqualität rating">
+            <p class="explanation">Wie gut haben Sie letzte Nacht geschlafen?</p>
+            <div class="rating-buttons-group" id="rating-buttons-schlafqualitat" role="group"
+              aria-label="Schlafqualität rating">
             </div>
-            <input type="hidden" id="schlafqualitat" name="schlafqualitat" required/>
+            <input type="hidden" id="schlafqualitat" name="schlafqualitat" required />
+          </div>
+
+          <!-- WÄHREND DES TAGES -->
+          <h6>Während des Tages</h6>
+          <p class="explanation">
+            Bitte messen Sie Ihren subjektiven Stresslevel mindestens dreimal am Tag
+          </p>
+
+          <div class="form-group align-items-left">
+            <input type="hidden" id="messungCount" min="3" value="0" required>
+            <span id="stress-count">0/3 Messungen</span>
+            <button type="button" class="action-button" data-toggle="modal" data-target="#stressModal">
+              Stresslevel messen
+            </button>
+          </div>
+
+
+          <!-- KURZ VOR DEM EINSCHLAFEN -->
+          <div class="form-group">
+            <h6>Kurz vor dem Einschlafen</h6>
+            <div class="form-row align-items-baseline">
+              <div class="col-md-9">
+                <p class="explanation">Wann gehen Sie heute ins Bett?</p>
+              </div>
+              <div class="col-md-3">
+                <input type="time" id="schlafenszeit" required />
+              </div>
+            </div>
+            <p class="explanation">Wie stressig war heute Ihr gesamter Tag?</p>
+            <div class="rating-buttons-group" id="rating-buttons-stresslevel" role="group"
+              aria-label="Stresslevel rating">
+            </div>
+            <input type="hidden" id="stresslevel" name="stresslevel" required />
+          </div>
+
+          <!-- Buttons -->
+          <div class="form-row align-items-left">
+            <button type="submit" class="action-button mr-2" id="save-button"
+              style="display: inline-block;">Speichern</button>
+            <button type="button" class="action-button mr-2" id="cancel-button"
+              style="display: none;">Abbrechen</button>
+            <div id="message"></div>
           </div>
         </div>
-        <button type="submit" class="action-button" id="save-button" style="display: inline-block;">Speichern</button>
-        <button type="button" class="action-button" id="cancel-button" style="display: none;">Abbrechen</button>
-        <div id="message"></div>
+
       </form>
+
+      <!-- MODAL: STRESSLEVEL FORMULAR -->
+      <div class="modal fade" id="stressModal" tabindex="-1" role="dialog" aria-labelledby="stressModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+
+          <form id="stress-form" class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="stressModalLabel">Stresslevel messen</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Schließen">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <p class="explanation">
+                Bitte messen Sie Ihren subjektiven Stresslevel mindestens dreimal am Tag in regelmäßigen Abständen
+                oder tragen Sie einen Wert nach einem emotionalen Ereignis (positiv oder negativ) ein.
+              </p>
+              <div class="form-group">
+                Datum
+                <input type="datetime-local" id="stress-datum" required />
+              </div>
+
+              <div class="form-group">
+                <label>Art der Messung:</label>
+                <div class="form-row">
+                  <div class="col-md-6">
+                    <label for="regular">
+                      <input type="radio" id="regular" name="messung-art" value="regulär" required />
+                      Reguläre Messung
+                    </label>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="besonder">
+                      <input type="radio" id="besonder" name="messung-art" value="besonderes Ereignis" required />
+                      Ein besonderes Ereignis
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="explanation">Wie schätzen Sie Ihren subjektiven Stress zum Zeitpunkt der Messung?</p>
+                <div class="rating-buttons-group" id="rating-buttons-stress-modal" role="group"
+                  aria-label="Stresslevel rating"></div>
+                <input type="hidden" id="stress-modal-value" name="stress-modal-value" required />
+              </div>
+
+              <div class="form-group">
+                <label for="mood">Stimmung zum Zeitpunkt der Messung</label>
+                <select id="mood" class="form-control" required>
+                  <option></option>
+                  <option>entspannt (glücklich)</option>
+                  <option>entspannt (gelangweilt)</option>
+                  <option>freudig erregt</option>
+                  <option>nervös</option>
+                  <option>angespannt</option>
+                  <option>aufgeregt (genervt)</option>
+                  <option>aufgeregt (freudig)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="action-button">Speichern</button>
+              <button type="button" class="action-button" data-dismiss="modal">Abbrechen</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
     </div>
 
-    <div id="entries-container">
-      <div id="entries-header">
-        <p>Gespeicherte Einträge</p>
-        <button class="action-button" id="download-csv" style="flex-shrink: 0;">CSV herunterladen</button>
-      </div>
-      <div id="entries-table-container">
-      <table id="entries-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Datum</th>
-            <th>⏰</th>
-            <th>💤</th>
-            <th>🙂</th>
-            <th>🛏️</th>
-            <th colspan="2"></th>
-          </tr>
-        </thead>
-        <tbody id="entries-table-body">
-          <!-- Einträge werden hier eingefügt -->
-        </tbody>
-      </table>
-      </div>
-  </div>
-  
+    <!-- Klappbarer Entries-Container mit Accordion -->
+    <div class="accordion" id="accordionTables">
+      <div class="card">
+        <div class="card-header" id="headingDailyEntryTable">
+          <div id="entries-header">
+            <span type="button" data-toggle="collapse" data-target="#collapseDailyEntryTable"
+              aria-expanded="true" aria-controls="collapseDailyEntryTable">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                <path
+                  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+              </svg>
+            </span>
+            <span class="card-caption">Tägliche Werte</span>
+            <button class="action-button" id="download-csv">CSV herunterladen</button>
+          </div>
+        </div>
+        <div id="collapseDailyEntryTable" class="collapse" aria-labelledby="headingDailyEntryTable"
+          data-parent="#accordionTables">
 
+          <div id="entries-table-container">
+            <table id="entries-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Datum</th>
+                  <th>⏰</th>
+                  <th>💤</th>
+                  <th>😫</th>
+                  <th>🛏️</th>
+                  <th colspan="2"></th>
+                </tr>
+              </thead>
+              <tbody id="entries-table-body">
+                <!-- Einträge werden hier eingefügt -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS für das Modal -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
