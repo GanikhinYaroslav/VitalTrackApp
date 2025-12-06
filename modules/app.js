@@ -1,6 +1,11 @@
-import { EntryTable } from './components/entryTable.js';
+import { DailyEntryTable } from './components/dailyEntryTable.js';
 import { DiaryForm } from './components/diaryForm.js';
 import { ExportButton } from './components/exportButton.js';
+
+const DAILY_ENTRY_LIST_KEY = 'tagebuchEntries';
+const CACHE_KEY = 'tagebuchFormCache';
+
+const STRESS_ENTRY_LIST_KEY = 'stressEntries';
 
 // Mount points from HTML
 const tableContainer = document.querySelector('#entries-table');
@@ -9,9 +14,10 @@ const exportBtn = document.querySelector('#download-csv');
 
 function init() {
   // Create independent components
-  const table = new EntryTable(tableContainer);
-  const form = new DiaryForm(formContainer);
-  const exporter = new ExportButton(exportBtn);
+  // Daily Entry Block
+  const table = new DailyEntryTable(tableContainer, DAILY_ENTRY_LIST_KEY);
+  const form = new DiaryForm(formContainer, DAILY_ENTRY_LIST_KEY, CACHE_KEY);
+  const exporter = new ExportButton(exportBtn, DAILY_ENTRY_LIST_KEY);
 
   // Connect table -> form
   form.connectTable(tableContainer);

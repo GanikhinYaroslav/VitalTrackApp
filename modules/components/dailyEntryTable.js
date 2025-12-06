@@ -1,15 +1,16 @@
 import { getEntries, getEntryAt, deleteEntry } from '../data/storage.js';
 
-export class EntryTable {
-  constructor(container) {
+export class DailyEntryTable {
+  constructor(container, entryListKey) {
     this.container = container;
     this.tableBody = container.querySelector('tbody');
+    this.entryListKey = entryListKey;
     this.update();
     this.bindEvents();
   }
 
   update() {
-    const entries = getEntries();
+    const entries = getEntries(this.entryListKey);
     this.tableBody.innerHTML = entries.map((entry, index) => `
       <tr class="entry-row">
         <td>${index + 1}</td>
@@ -44,7 +45,7 @@ export class EntryTable {
 
       if (editBtn) {
         const index = parseInt(editBtn.dataset.index);
-        const entry = getEntryAt(index);
+        const entry = getEntryAt(this.entryListKey, index);
         if (entry) entry.index = index;
         // Dispatch custom event for form to handle
         this.container.dispatchEvent(new CustomEvent('edit-entry', { 
@@ -54,10 +55,10 @@ export class EntryTable {
 
       if (deleteBtn) {
         const index = parseInt(deleteBtn.dataset.index);
-        const entry = getEntryAt(index);
+        const entry = getEntryAt(this.entryListKey, index);
         try {
           await this.confirmDeleteEntry(index, entry);
-          deleteEntry(index);
+          deleteEntry(this.entryListKey, index);
           document.dispatchEvent(new CustomEvent('data-changed'));
         } catch(e) {} // User cancelled - do nothing
       }

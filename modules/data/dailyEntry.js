@@ -5,7 +5,7 @@ MIN_SLEEP_QUALITY,
 MAX_SLEEP_QUALITY
 } from './constants.js';
 
-export class Entry {
+export class DailyEntry {
   constructor(data) {
     // Validate and freeze at creation
     this.datum = data.datum;
@@ -34,7 +34,7 @@ export class Entry {
   // Factory for safe creation
   static create(data) {
     try {
-      return new Entry(data);
+      return new DailyEntry(data);
     } catch {
       return null;
     }

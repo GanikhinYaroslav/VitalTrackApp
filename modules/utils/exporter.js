@@ -1,10 +1,10 @@
-import { Entry } from "../data/entry.js";
+import { DailyEntry } from "../data/dailyEntry.js";
 
 // Exportdaten vorbereiten und nach dem Datum sortieren
 function getSortedExportDataWithHeader(entries) {
   const header = ['Datum', 'Aufstehzeit', 'Schlafenszeit', 'Stresslevel', 'Schlafqualitat'];
   const rows = entries.map(e => {
-    const entry = Entry.create(e);
+    const entry = DailyEntry.create(e);
     if (!entry) {
       alert(`Ungültiger Eintrag ${JSON.stringify(e)} gefunden, wird übersprungen.`);
       return [];

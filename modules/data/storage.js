@@ -1,38 +1,36 @@
-export const ENTRY_LIST_KEY = 'tagebuchEntries';
-
 // Daten aus localStorage lesen oder neu initialisieren
-function getEntries() {
-  const data = localStorage.getItem(ENTRY_LIST_KEY);
+function getEntries(entryListKey) {
+  const data = localStorage.getItem(entryListKey);
   return data ? JSON.parse(data) : [];
 }
 
 // Eintrag mit einem Index laden
-function getEntryAt(index) {
-  const entries = getEntries();
+function getEntryAt(entryListKey, index) {
+  const entries = getEntries(entryListKey);
   return entries[index];
 }
 
 // Neuer Eintrag speichern
-function addEntry(entry) {
-  const entries = getEntries();
+function addEntry(entryListKey, entry) {
+  const entries = getEntries(entryListKey);
   entries.push(entry);
-  localStorage.setItem(ENTRY_LIST_KEY, JSON.stringify(entries));
+  localStorage.setItem(entryListKey, JSON.stringify(entries));
 }
 
 //Bestehenden Eintrag bearbeiten
-function replaceEntry(entry, index) {
-  const entries = getEntries();
+function replaceEntry(entryListKey, entry, index) {
+  const entries = getEntries(entryListKey);
   if (index >= 0 && index < entries.length) {
     entries[index] = entry;
-    localStorage.setItem(ENTRY_LIST_KEY, JSON.stringify(entries));
+    localStorage.setItem(entryListKey, JSON.stringify(entries));
   }
 }
 
 // Eintrag löschen
-function deleteEntry(index) {
-  const entries = getEntries();
+function deleteEntry(entryListKey, index) {
+  const entries = getEntries(entryListKey);
   entries.splice(index, 1);
-  localStorage.setItem(ENTRY_LIST_KEY, JSON.stringify(entries));
+  localStorage.setItem(entryListKey, JSON.stringify(entries));
 }
 
 export { getEntries, getEntryAt, addEntry, replaceEntry, deleteEntry };

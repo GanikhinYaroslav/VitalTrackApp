@@ -2,12 +2,12 @@ import {
   MIN_STRESS_LEVEL, MAX_STRESS_LEVEL, MIN_SLEEP_QUALITY, MAX_SLEEP_QUALITY 
 } from '../data/constants.js';
 import { addEntry, replaceEntry } from '../data/storage.js';
-import { Entry } from '../data/entry.js';
+import { DailyEntry } from '../data/dailyEntry.js';
 import { createRatingButtons } from './ratingButtons.js';
-import { cacheFormInput, getCachedEntry, clearCachedInput } from '../utils/cache.js';
+import * as cache from '../utils/cache.js';
 
 export class DiaryForm {
-  constructor(container) {
+  constructor(container, entryListKey, cacheKey) {
     this.container = container;
     this.form = container.querySelector('#entry-form');
     this.entryIndexInput = this.form.querySelector('#entry-index');
@@ -21,6 +21,9 @@ export class DiaryForm {
     this.saveBtn = this.form.querySelector('#save-button');
     this.cancelBtn = this.form.querySelector('#cancel-button');
     this.messageElement = this.form.querySelector('#message');
+
+    this.entryListKey = entryListKey;
+    this.cacheKey = cacheKey;
 
     this.init();
   }
@@ -66,7 +69,7 @@ export class DiaryForm {
         stresslevel: this.stressInput.value,
         schlafqualitat: this.sleepQualityInput.value
       };
-      cacheFormInput(entry);
+      cache.save(this.cacheKey, entry);
     });
 
     // Cancel
@@ -84,7 +87,7 @@ export class DiaryForm {
   }
 
   restoreCache() {
-    const cached = getCachedEntry();
+    const cached = cache.getCachedData(this.cacheKey);
     if (cached) {
       this.form.aufstehzeit.value = cached.aufstehzeit || '';
       this.form.schlafenszeit.value = cached.schlafenszeit || '';
@@ -151,17 +154,17 @@ export class DiaryForm {
       onError('Bitte wählen Sie Stress und Schlafqualität aus.');
       return;
     }
-    const entry = Entry.create(formData);
+    const entry = DailyEntry.create(formData);
     // Eingabe korrekt
     if (entry) {
       // Neueintrag hinzufügen wenn es kein Index zum Bearbeiten gibt
       // sonst wird der bestendende Eintrag aktualisiert
       if (entryIndex === '') {
-        addEntry(entry);
-        clearCachedInput();
+        addEntry(this.entryListKey, entry);
+        cache.clear(this.cacheKey);
         onSuccess('Eintrag gespeichert.');
       } else {
-        replaceEntry(entry, parseInt(entryIndex));
+        replaceEntry(this.entryListKey, entry, parseInt(entryIndex));
         onSuccess('Eintrag geändert.');
       }
     } else {
